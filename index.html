@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studimax - Tu organizador de estudios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Studimax</h1>
+    <p class="motivacion">¡Tu esfuerzo hoy será tu éxito mañana!</p>
+  </header>
+
+  <div class="container" id="auth-container">
+    <h2>Registro / Login</h2>
+    <input id="email" type="email" placeholder="Correo">
+    <input id="password" type="password" placeholder="Contraseña">
+    <div class="auth-buttons">
+      <button id="loginBtn">Entrar</button>
+      <button id="registerBtn">Registrarme</button>
+    </div>
+    <p id="error-message" class="error-message"></p>
+  </div>
+
+  <div class="container" id="app-container" style="display:none;">
+    <div class="user-info">
+      <span id="user-email"></span>
+      <button id="logoutBtn" class="logout-btn">Salir</button>
+    </div>
+
+    <nav>
+      <button data-tab="tasks" class="tab-btn active">Tareas</button>
+      <button data-tab="schedule" class="tab-btn">Horario</button>
+      <button data-tab="exams" class="tab-btn">Exámenes</button>
+      <button data-tab="library" class="tab-btn">Biblioteca</button>
+    </nav>
+
+    <div id="tasks" class="tab active">
+      <h2>Tareas</h2>
+      <div class="input-group">
+        <input id="task-input" placeholder="Nueva tarea">
+        <button id="addTaskBtn">Añadir</button>
+      </div>
+      <ul id="tasks-list"></ul>
+    </div>
+
+    <div id="schedule" class="tab">
+      <h2>Horario</h2>
+      <div class="input-group">
+        <input id="schedule-subject" placeholder="Materia">
+        <select id="schedule-day">
+          <option>Lunes</option><option>Martes</option><option>Miércoles</option>
+          <option>Jueves</option><option>Viernes</option>
+        </select>
+        <input id="schedule-time" placeholder="08:00-09:00">
+        <button id="addScheduleBtn">Añadir</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Materia</th><th>Día</th><th>Hora</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-table"></tbody>
+      </table>
+    </div>
+
+    <div id="exams" class="tab">
+      <h2>Exámenes</h2>
+      <div class="input-group">
+        <input id="exam-title" placeholder="Título">
+        <input id="exam-date" type="date">
+        <button id="addExamBtn">Añadir</button>
+      </div>
+      <ul id="exams-list"></ul>
+    </div>
+
+    <div id="library" class="tab">
+      <h2>Biblioteca</h2>
+      <div class="input-group">
+        <input id="post-title" placeholder="Título">
+        <textarea id="post-content" rows="3" placeholder="Contenido"></textarea>
+        <button id="addPostBtn">Publicar</button>
+      </div>
+      <ul id="library-list"></ul>
+    </div>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>

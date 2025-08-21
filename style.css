@@ -1,0 +1,34 @@
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; margin:0; padding:0; }
+header { background: linear-gradient(90deg, #6366f1, #818cf8); color:white; padding:1.5rem 1rem; text-align:center; }
+.container { max-width:900px; margin:2rem auto; padding:2rem; background:white; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+input, select, textarea { padding:0.75rem; margin:0.5rem 0; width:100%; border-radius:8px; border:1px solid #cbd5e1; box-sizing:border-box; }
+button { padding:0.75rem 1.5rem; margin:0.5rem 0; width:100%; border-radius:8px; border:none; cursor:pointer; background:#6366f1; color:white; transition:background 0.3s; }
+button:hover { background:#4f46e5; }
+.auth-buttons { display:flex; gap:10px; }
+.auth-buttons button { flex:1; }
+nav { display:flex; gap:0.5rem; margin:1.5rem 0; flex-wrap:wrap; }
+nav button { flex:1; background:#818cf8; color:white; border-radius:10px; }
+nav button.active { background:#4f46e5; }
+nav button:hover { background:#6366f1; }
+.tab { display:none; }
+.tab.active { display:block; }
+h2 { color:#4f46e5; margin-bottom:1rem; }
+ul { list-style:none; padding:0; }
+li { display:flex; justify-content:space-between; align-items:center; padding:0.75rem; border-bottom:1px solid #e5e7eb; transition:background 0.3s; }
+li:hover { background:#f9fafb; }
+li.completed span { text-decoration:line-through; color:#9ca3af; }
+.motivacion { font-style:italic; margin-top:0.5rem; text-align:center; color:#e0e7ff; min-height:24px; }
+.error-message { color:#ef4444; margin-top:1rem; text-align:center; display:none; }
+.user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.logout-btn { width:auto; background:#ef4444; }
+.logout-btn:hover { background:#dc2626; }
+.input-group { display:flex; gap:10px; margin-bottom:1rem; flex-wrap:wrap; }
+.input-group input, .input-group select, .input-group textarea { flex:1; }
+.input-group button { width:auto; }
+.actions-buttons { display:flex; gap:5px; }
+.actions-buttons button { width:auto; padding:0.5rem 1rem; }
+.delete-btn { background:#ef4444; }
+.delete-btn:hover { background:#dc2626; }
+table { width:100%; border-collapse:collapse; margin-top:1rem; }
+th, td { border:1px solid #cbd5e1; padding:0.75rem; text-align:center; }
+th { background:#e0e7ff; }
