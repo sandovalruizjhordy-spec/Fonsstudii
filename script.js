@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // El botón de añadir posts solo es visible para el admin
     document.getElementById('addPostBtn').addEventListener('click', async () => {
-        if (getUserId() !== ADMIN_UID) { // <-- Se usa la constante
+        if (getUserId() !== tkC9lwmvmDSbrZDXW8k689Mi5xA3) { // <-- Se usa la constante
             return alert("Solo el administrador puede publicar en la biblioteca.");
         }
         const title = document.getElementById('post-title').value;
