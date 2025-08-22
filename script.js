@@ -69,25 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
         await signOut(auth);
     });
 
-    // Cambia la interfaz según el estado de autenticación
+    // Cambia la interfaz según el estado de autenticación (¡Solo una vez!)
     onAuthStateChanged(auth, user => {
         if (user) {
+            console.log("ID del usuario actual:", user.uid);
             document.getElementById('auth-container').style.display = "none";
             document.getElementById('app-container').style.display = "block";
             document.getElementById('user-email').textContent = user.email;
             loadData(user.uid);
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            console.log("ID del usuario actual:", user.uid);
-           document.getElementById('auth-container').style.display = "none";
-           document.getElementById('app-container').style.display = "block";
-           document.getElementById('user-email').textContent = user.email;
-           loadData(user.uid);
-        // ...
-
             
-            // NUEVO: Oculta/muestra el formulario de la biblioteca para usuarios no administradores
-            if (user.uid === "tkC9lwmvmDSbrZDXW8k689Mi5xA3" ) { // <-- Se usa la constante
+            // Oculta/muestra el formulario de la biblioteca para usuarios no administradores
+            if (user.uid === ADMIN_UID) { // <-- Se usa la constante
                 libraryInputGroup.style.display = 'flex';
             } else {
                 libraryInputGroup.style.display = 'none';
@@ -142,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // El botón de añadir posts solo es visible para el admin
     document.getElementById('addPostBtn').addEventListener('click', async () => {
-        if (getUserId() !== "tkC9lwmvmDSbrZDXW8k689Mi5xA3" ) { // <-- Se usa la constante
+        if (getUserId() !== ADMIN_UID) { // <-- Se usa la constante
             return alert("Solo el administrador puede publicar en la biblioteca.");
         }
         const title = document.getElementById('post-title').value;
@@ -247,3 +239,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+                
