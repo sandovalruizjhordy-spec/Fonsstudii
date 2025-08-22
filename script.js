@@ -108,9 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Escuchadores para añadir datos
     document.getElementById('addTaskBtn').addEventListener('click', async () => {
         const text = document.getElementById('task-input').value;
+        const date = document.getElementById('task-date').value; // <-- Se agrega la captura de la fecha
         if (!text) return alert("Por favor, introduce una tarea.");
-        await addDoc(collection(db, 'tasks'), { text, completed: false, userId: getUserId(), createdAt: new Date() });
+        await addDoc(collection(db, 'tasks'), { 
+            text, 
+            date, // <-- Se guarda la fecha
+            completed: false, 
+            userId: getUserId(), 
+            createdAt: new Date() 
+        });
         document.getElementById('task-input').value = "";
+        document.getElementById('task-date').value = "";
     });
 
     document.getElementById('addScheduleBtn').addEventListener('click', async () => {
@@ -157,7 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.id = d.id;
                 li.className = data.completed ? 'completed' : '';
                 li.innerHTML = `
-                    <span>${data.text}</span>
+                    <span>
+                        ${data.text} 
+                        ${data.date ? `- **Fecha límite:** ${data.date}` : ''}
+                    </span>
                     <div class="actions-buttons">
                         <button onclick="toggleTaskCompleted('${d.id}', ${data.completed})">${data.completed ? 'Desmarcar' : 'Completar'}</button>
                         <button class="delete-btn" onclick="deleteDocument('tasks', '${d.id}')">Eliminar</button>
@@ -239,4 +250,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
-                
