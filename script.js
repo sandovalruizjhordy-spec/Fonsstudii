@@ -23,6 +23,24 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Funciones para manejar documentos (definidas en el ámbito global 'window')
+window.toggleTaskCompleted = async (docId, isCompleted) => {
+    const taskRef = doc(db, 'tasks', docId);
+    await updateDoc(taskRef, { completed: !isCompleted });
+};
+
+window.deleteDocument = async (collectionName, docId) => {
+    if (confirm("¿Estás seguro de que quieres eliminar este elemento?")) {
+        const docRef = doc(db, collectionName, docId);
+        try {
+            await deleteDoc(docRef);
+        } catch (e) {
+            console.error("Error al eliminar el documento: ", e);
+            alert("Hubo un error al intentar eliminar. Por favor, inténtalo de nuevo.");
+        }
+    }
+};
+
 // Espera a que el DOM esté completamente cargado antes de ejecutar el script
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -231,22 +249,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-    // Funciones para manejar documentos
-    window.toggleTaskCompleted = async (docId, isCompleted) => {
-        const taskRef = doc(db, 'tasks', docId);
-        await updateDoc(taskRef, { completed: !isCompleted });
-    };
-
-    window.deleteDocument = async (collectionName, docId) => {
-        if (confirm("¿Estás seguro de que quieres eliminar este elemento?")) {
-            const docRef = doc(db, collectionName, docId);
-            try {
-                await deleteDoc(docRef);
-            } catch (e) {
-                console.error("Error al eliminar el documento: ", e);
-                alert("Hubo un error al intentar eliminar. Por favor, inténtalo de nuevo.");
-            }
-        }
-    };
 });
