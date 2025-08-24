@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 // ¡IMPORTANTE! Reemplaza 'TU_UID_DEL_ADMIN' con tu User UID de Firebase
-const ADMIN_UID = 'tkC9lwmvmDSbrZDXW8k689Mi5xA3'; // Ya tienes el valor aquí
+const ADMIN_UID = 'tkC9lwmvmDSbrZDXW8k689Mi5xA3';
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
@@ -41,28 +41,7 @@ window.deleteDocument = async (collectionName, docId) => {
     }
 };
 
-// Lógica de autenticación: se ejecuta inmediatamente
-onAuthStateChanged(auth, user => {
-    const libraryInputGroup = document.querySelector('#library .input-group');
-    if (user) {
-        document.getElementById('auth-container').style.display = "none";
-        document.getElementById('app-container').style.display = "block";
-        document.getElementById('user-email').textContent = user.email;
-        loadData(user.uid);
-        
-        if (user.uid === ADMIN_UID) {
-            libraryInputGroup.style.display = 'flex';
-        } else {
-            libraryInputGroup.style.display = 'none';
-        }
-
-    } else {
-        document.getElementById('auth-container').style.display = "block";
-        document.getElementById('app-container').style.display = "none";
-    }
-});
-
-
+// Se asegura que el DOM esté completamente cargado antes de ejecutar el código que interactúa con él
 document.addEventListener('DOMContentLoaded', () => {
 
     // Variables y elementos del DOM
@@ -74,7 +53,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const hideErrorMessage = () => {
         errorMessage.style.display = 'none';
     };
-    
+    const libraryInputGroup = document.querySelector('#library .input-group');
+
+    // Lógica de autenticación: se ejecuta una vez que el DOM está listo
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            document.getElementById('auth-container').style.display = "none";
+            document.getElementById('app-container').style.display = "block";
+            document.getElementById('user-email').textContent = user.email;
+            loadData(user.uid);
+            
+            if (user.uid === ADMIN_UID) {
+                if (libraryInputGroup) libraryInputGroup.style.display = 'flex';
+            } else {
+                if (libraryInputGroup) libraryInputGroup.style.display = 'none';
+            }
+
+        } else {
+            document.getElementById('auth-container').style.display = "block";
+            document.getElementById('app-container').style.display = "none";
+        }
+    });
 
     // Frases motivacionales
     const frases = ["¡Tu esfuerzo hoy será tu éxito mañana!", "Cada pequeño paso te acerca a tu meta.", "Aprender algo nuevo cada día te hace más fuerte."];
