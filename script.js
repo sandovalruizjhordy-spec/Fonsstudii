@@ -41,7 +41,28 @@ window.deleteDocument = async (collectionName, docId) => {
     }
 };
 
-// Espera a que el DOM esté completamente cargado antes de ejecutar el script
+// Lógica de autenticación: se ejecuta inmediatamente
+onAuthStateChanged(auth, user => {
+    const libraryInputGroup = document.querySelector('#library .input-group');
+    if (user) {
+        document.getElementById('auth-container').style.display = "none";
+        document.getElementById('app-container').style.display = "block";
+        document.getElementById('user-email').textContent = user.email;
+        loadData(user.uid);
+        
+        if (user.uid === ADMIN_UID) {
+            libraryInputGroup.style.display = 'flex';
+        } else {
+            libraryInputGroup.style.display = 'none';
+        }
+
+    } else {
+        document.getElementById('auth-container').style.display = "block";
+        document.getElementById('app-container').style.display = "none";
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Variables y elementos del DOM
@@ -53,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hideErrorMessage = () => {
         errorMessage.style.display = 'none';
     };
-    const libraryInputGroup = document.querySelector('#library .input-group');
+    
 
     // Frases motivacionales
     const frases = ["¡Tu esfuerzo hoy será tu éxito mañana!", "Cada pequeño paso te acerca a tu meta.", "Aprender algo nuevo cada día te hace más fuerte."];
@@ -87,28 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await signOut(auth);
     });
 
-    // Cambia la interfaz según el estado de autenticación (¡Solo una vez!)
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            console.log("ID del usuario actual:", user.uid);
-            document.getElementById('auth-container').style.display = "none";
-            document.getElementById('app-container').style.display = "block";
-            document.getElementById('user-email').textContent = user.email;
-            loadData(user.uid);
-            
-            // Oculta/muestra el formulario de la biblioteca para usuarios no administradores
-            if (user.uid === ADMIN_UID) { // <-- Se usa la constante
-                libraryInputGroup.style.display = 'flex';
-            } else {
-                libraryInputGroup.style.display = 'none';
-            }
-
-        } else {
-            document.getElementById('auth-container').style.display = "block";
-            document.getElementById('app-container').style.display = "none";
-        }
-    });
-
     // Funcionalidad de las pestañas
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -126,11 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Escuchadores para añadir datos
     document.getElementById('addTaskBtn').addEventListener('click', async () => {
         const text = document.getElementById('task-input').value;
-        const date = document.getElementById('task-date').value; // <-- Se agrega la captura de la fecha
+        const date = document.getElementById('task-date').value; 
         if (!text) return alert("Por favor, introduce una tarea.");
         await addDoc(collection(db, 'tasks'), { 
             text, 
-            date, // <-- Se guarda la fecha
+            date, 
             completed: false, 
             userId: getUserId(), 
             createdAt: new Date() 
@@ -158,9 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('exam-date').value = "";
     });
 
-    // El botón de añadir posts solo es visible para el admin
     document.getElementById('addPostBtn').addEventListener('click', async () => {
-        if (getUserId() !== ADMIN_UID) { // <-- Se usa la constante
+        if (getUserId() !== ADMIN_UID) { 
             return alert("Solo el administrador puede publicar en la biblioteca.");
         }
         const title = document.getElementById('post-title').value;
@@ -172,12 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Carga y muestra los datos
-    function loadData(userId) 
-        // Tareas (solo las del usuario actual)
-        console.log("Paso 1: Iniciando la carga de tareas...");
-  
+    function loadData(userId) {
         onSnapshot(query(collection(db, 'tasks'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
-            console.log("Paso 2: Datos de tareas recibidos. Cantidad:", snap.docs.length);
             const list = document.getElementById('tasks-list');
             list.innerHTML = "";
             snap.docs.forEach(d => {
@@ -199,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Horario (solo las del usuario actual)
         onSnapshot(query(collection(db, 'schedule'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
             const table = document.getElementById('schedule-table');
             table.innerHTML = "";
@@ -217,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Exámenes (solo los del usuario actual)
         onSnapshot(query(collection(db, 'exams'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
             const list = document.getElementById('exams-list');
             list.innerHTML = "";
@@ -233,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Biblioteca (posts de todos los usuarios)
         onSnapshot(query(collection(db, 'library'), orderBy('createdAt', 'desc')), snap => {
             const list = document.getElementById('library-list');
             list.innerHTML = "";
