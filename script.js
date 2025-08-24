@@ -172,9 +172,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Carga y muestra los datos
-    function loadData(userId) {
+    function loadData(userId) 
         // Tareas (solo las del usuario actual)
+        console.log("Paso 1: Iniciando la carga de tareas...");
+  
         onSnapshot(query(collection(db, 'tasks'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
+            console.log("Paso 2: Datos de tareas recibidos. Cantidad:", snap.docs.length);
             const list = document.getElementById('tasks-list');
             list.innerHTML = "";
             snap.docs.forEach(d => {
