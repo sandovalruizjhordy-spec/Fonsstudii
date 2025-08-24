@@ -14,7 +14,6 @@ const firebaseConfig = {
   measurementId: "G-VQE0597WG1"
 };
 
-// ¡IMPORTANTE! Reemplaza 'TU_UID_DEL_ADMIN' con tu User UID de Firebase
 const ADMIN_UID = 'tkC9lwmvmDSbrZDXW8k689Mi5xA3';
 
 // Inicializa Firebase
@@ -41,7 +40,6 @@ window.deleteDocument = async (collectionName, docId) => {
     }
 };
 
-// Se asegura que el DOM esté completamente cargado antes de ejecutar el código que interactúa con él
 document.addEventListener('DOMContentLoaded', () => {
 
     // Variables y elementos del DOM
