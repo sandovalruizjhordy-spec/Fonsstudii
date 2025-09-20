@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <title>Studimax</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studimax - Tu organizador de estudios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Studimax</h1>
-    <p class="motivacion">¡Tu esfuerzo hoy será tu éxito mañana!</p>
+    <p class="motivacion" id="motivacion">¡Tu esfuerzo hoy será tu éxito mañana!</p>
   </header>
 
   <div class="container" id="auth-container">
@@ -34,13 +34,14 @@
       <button data-tab="schedule" class="tab-btn">Horario</button>
       <button data-tab="exams" class="tab-btn">Exámenes</button>
       <button data-tab="library" class="tab-btn">Biblioteca</button>
+      <button data-tab="reviews" class="tab-btn">Reseñas</button>
     </nav>
 
     <div id="tasks" class="tab active">
       <h2>Tareas</h2>
       <div class="input-group">
         <input id="task-input" placeholder="Nueva tarea">
-        <input id="task-date" type="date"> <button id="addTaskBtn">Añadir</button>
+        <button id="addTaskBtn">Añadir</button>
       </div>
       <ul id="tasks-list"></ul>
     </div>
@@ -85,8 +86,19 @@
       </div>
       <ul id="library-list"></ul>
     </div>
-  </div>
 
+    <div id="reviews" class="tab">
+      <h2>Reseñas</h2>
+      <div class="input-group">
+        <input id="review-title" placeholder="Título de la reseña">
+        <textarea id="review-content" rows="3" placeholder="Escribe tu reseña aquí..."></textarea>
+        <button id="addReviewBtn">Enviar Reseña</button>
+      </div>
+      <ul id="reviews-list"></ul>
+    </div>
+
+  </div>
+  
   <script src="script.js" type="module"></script>
 </body>
 </html>
