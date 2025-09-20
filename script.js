@@ -21,18 +21,22 @@ const db = getFirestore(app);
 
 const errorMessage = document.getElementById('error-message');
 const showErrorMessage = (msg) => {
-    errorMessage.textContent = msg;
-    errorMessage.style.display = 'block';
+    if (errorMessage) {
+        errorMessage.textContent = msg;
+        errorMessage.style.display = 'block';
+    }
 };
 const hideErrorMessage = () => {
-    errorMessage.style.display = 'none';
+    if (errorMessage) {
+        errorMessage.style.display = 'none';
+    }
 };
 
 const frases = ["¡Tu esfuerzo hoy será tu éxito mañana!", "Cada pequeño paso te acerca a tu meta.", "Aprender algo nuevo cada día te hace más fuerte."];
 let indexFrase = 0;
 setInterval(() => {
-    indexFrase = (indexFrase + 1) % frases.length;
     document.getElementById('motivacion').textContent = frases[indexFrase];
+    indexFrase = (indexFrase + 1) % frases.length;
 }, 5000);
 
 document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -132,91 +136,100 @@ document.getElementById('addReviewBtn').addEventListener('click', async () => {
 function loadData(userId) {
     onSnapshot(query(collection(db, 'tasks'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
         const list = document.getElementById('tasks-list');
-        list.innerHTML = "";
-        snap.docs.forEach(d => {
-            const data = d.data();
-            const li = document.createElement('li');
-            li.id = d.id;
-            li.className = data.completed ? 'completed' : '';
-            li.innerHTML = `
-                <span>${data.text}</span>
-                <div class="actions-buttons">
-                    <button onclick="toggleTaskCompleted('${d.id}', ${data.completed})">${data.completed ? 'Desmarcar' : 'Completar'}</button>
-                    <button class="delete-btn" onclick="deleteDocument('tasks', '${d.id}')">Eliminar</button>
-                </div>
-            `;
-            list.appendChild(li);
-        });
+        if (list) {
+            list.innerHTML = "";
+            snap.docs.forEach(d => {
+                const data = d.data();
+                const li = document.createElement('li');
+                li.id = d.id;
+                li.className = data.completed ? 'completed' : '';
+                li.innerHTML = `
+                    <span>${data.text}</span>
+                    <div class="actions-buttons">
+                        <button onclick="window.toggleTaskCompleted('${d.id}', ${data.completed})">${data.completed ? 'Desmarcar' : 'Completar'}</button>
+                        <button class="delete-btn" onclick="window.deleteDocument('tasks', '${d.id}')">Eliminar</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
     });
 
     onSnapshot(query(collection(db, 'schedule'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
         const table = document.getElementById('schedule-table');
-        table.innerHTML = "";
-        snap.docs.forEach(d => {
-            const data = d.data();
-            const tr = document.createElement('tr');
-            tr.id = d.id;
-            tr.innerHTML = `
-                <td>${data.subject}</td>
-                <td>${data.day}</td>
-                <td>${data.time}</td>
-                <td><button class="delete-btn" onclick="deleteDocument('schedule', '${d.id}')">Eliminar</button></td>
-            `;
-            table.appendChild(tr);
-        });
+        if (table) {
+            table.innerHTML = "";
+            snap.docs.forEach(d => {
+                const data = d.data();
+                const tr = document.createElement('tr');
+                tr.id = d.id;
+                tr.innerHTML = `
+                    <td>${data.subject}</td>
+                    <td>${data.day}</td>
+                    <td>${data.time}</td>
+                    <td><button class="delete-btn" onclick="window.deleteDocument('schedule', '${d.id}')">Eliminar</button></td>
+                `;
+                table.appendChild(tr);
+            });
+        }
     });
 
     onSnapshot(query(collection(db, 'exams'), where('userId', '==', userId), orderBy('createdAt', 'desc')), snap => {
         const list = document.getElementById('exams-list');
-        list.innerHTML = "";
-        snap.docs.forEach(d => {
-            const data = d.data();
-            const li = document.createElement('li');
-            li.id = d.id;
-            li.innerHTML = `
-                <span><strong>${data.title}</strong> - ${data.date}</span>
-                <button class="delete-btn" onclick="deleteDocument('exams', '${d.id}')">Eliminar</button>
-            `;
-            list.appendChild(li);
-        });
+        if (list) {
+            list.innerHTML = "";
+            snap.docs.forEach(d => {
+                const data = d.data();
+                const li = document.createElement('li');
+                li.id = d.id;
+                li.innerHTML = `
+                    <span><strong>${data.title}</strong> - ${data.date}</span>
+                    <button class="delete-btn" onclick="window.deleteDocument('exams', '${d.id}')">Eliminar</button>
+                `;
+                list.appendChild(li);
+            });
+        }
     });
 
     onSnapshot(query(collection(db, 'library'), orderBy('createdAt', 'desc')), snap => {
         const list = document.getElementById('library-list');
-        list.innerHTML = "";
-        snap.docs.forEach(d => {
-            const data = d.data();
-            const li = document.createElement('li');
-            li.id = d.id;
-            li.innerHTML = `
-                <div>
-                    <strong>${data.title}</strong>
-                    <p>${data.content}</p>
-                </div>
-                ${data.userId === userId ? `<button class="delete-btn" onclick="deleteDocument('library', '${d.id}')">Eliminar</button>` : ''}
-            `;
-            list.appendChild(li);
-        });
+        if (list) {
+            list.innerHTML = "";
+            snap.docs.forEach(d => {
+                const data = d.data();
+                const li = document.createElement('li');
+                li.id = d.id;
+                li.innerHTML = `
+                    <div>
+                        <strong>${data.title}</strong>
+                        <p>${data.content}</p>
+                    </div>
+                    ${data.userId === userId ? `<button class="delete-btn" onclick="window.deleteDocument('library', '${d.id}')">Eliminar</button>` : ''}
+                `;
+                list.appendChild(li);
+            });
+        }
     });
     
-    // Nueva sección: Reseñas (todos los usuarios)
     onSnapshot(query(collection(db, 'reviews'), orderBy('createdAt', 'desc')), snap => {
         const list = document.getElementById('reviews-list');
-        list.innerHTML = "";
-        snap.docs.forEach(d => {
-            const data = d.data();
-            const li = document.createElement('li');
-            li.id = d.id;
-            li.innerHTML = `
-                <div>
-                    <strong>${data.title}</strong><br>
-                    <small>Por: ${data.userEmail}</small>
-                    <p>${data.content}</p>
-                </div>
-                ${data.userId === userId ? `<button class="delete-btn" onclick="deleteDocument('reviews', '${d.id}')">Eliminar</button>` : ''}
-            `;
-            list.appendChild(li);
-        });
+        if (list) {
+            list.innerHTML = "";
+            snap.docs.forEach(d => {
+                const data = d.data();
+                const li = document.createElement('li');
+                li.id = d.id;
+                li.innerHTML = `
+                    <div>
+                        <strong>${data.title}</strong><br>
+                        <small>Por: ${data.userEmail}</small>
+                        <p>${data.content}</p>
+                    </div>
+                    ${data.userId === userId ? `<button class="delete-btn" onclick="window.deleteDocument('reviews', '${d.id}')">Eliminar</button>` : ''}
+                `;
+                list.appendChild(li);
+            });
+        }
     });
 }
 
