@@ -35,8 +35,11 @@ const hideErrorMessage = () => {
 const frases = ["¡Tu esfuerzo hoy será tu éxito mañana!", "Cada pequeño paso te acerca a tu meta.", "Aprender algo nuevo cada día te hace más fuerte."];
 let indexFrase = 0;
 setInterval(() => {
-    document.getElementById('motivacion').textContent = frases[indexFrase];
-    indexFrase = (indexFrase + 1) % frases.length;
+    const motivacionEl = document.getElementById('motivacion');
+    if (motivacionEl) {
+        motivacionEl.textContent = frases[indexFrase];
+        indexFrase = (indexFrase + 1) % frases.length;
+    }
 }, 5000);
 
 document.getElementById('loginBtn').addEventListener('click', async () => {
